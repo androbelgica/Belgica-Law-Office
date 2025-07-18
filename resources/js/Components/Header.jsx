@@ -47,7 +47,7 @@ export default function Header() {
                                     isScrolled ? 'h-6' : 'h-8'
                                 }`}
                             />
-                            <span className="ml-2 text-xl font-serif font-bold text-secondary-900">
+                            <span className="ml-2 text-3xl font-serif font-bold text-secondary-900">
                                 BelgicaLaw
                             </span>
                         </Link>

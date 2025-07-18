@@ -11,7 +11,7 @@ export default function ServiceCard({ icon: Icon, title, description, features, 
         >
             {/* Service Image */}
             {image_url && (
-                <div className="relative h-48 overflow-hidden">
+                <div className="relative h-96 overflow-hidden">
                     <img
                         src={`/storage/${image_url}`}
                         alt={title}

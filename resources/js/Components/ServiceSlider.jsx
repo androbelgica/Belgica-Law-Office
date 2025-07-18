@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
 import { motion } from 'framer-motion';
 import { Link } from '@inertiajs/react';
-import { 
+import {
     ArrowRightIcon,
     CheckIcon,
     ScaleIcon,
@@ -56,7 +56,7 @@ export default function ServiceSlider({ services = [] }) {
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-                <motion.div 
+                <motion.div
                     className="text-center mb-12"
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -125,7 +125,7 @@ export default function ServiceSlider({ services = [] }) {
                 </div>
 
                 {/* View All Services Button */}
-                <motion.div 
+                <motion.div
                     className="text-center mt-12"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}

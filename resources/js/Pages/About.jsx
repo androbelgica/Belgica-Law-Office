@@ -33,14 +33,20 @@ export default function About({ settings = {} }) {
             <section className="bg-secondary-50 py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
-                        <h1 className="text-4xl md:text-5xl font-serif font-bold text-secondary-900 mb-6">
+                        <h1 className="text-4xl md:text-5xl font-serif font-bold text-secondary-900 mb-2">
                             Atty. Andrew A. Belgica
                         </h1>
+
+                        <p className="text-lg text-secondary-700 italic mb-6">
+                            Attorney-at-Law
+                        </p>
+
                         <p className="text-xl text-secondary-600 max-w-3xl mx-auto">
                             Dedicated to providing exceptional legal services with integrity,
                             professionalism, and a commitment to client success.
                         </p>
                     </div>
+
                 </div>
             </section>
 

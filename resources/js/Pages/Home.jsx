@@ -47,42 +47,51 @@ export default function Home({ services = [], articles = [], testimonials = [], 
                     ></div>
                 </div>
 
-                {/* Content */}
-                <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                    >
-                        <h1 className="text-4xl md:text-6xl font-serif font-bold mb-6">
-                            Professional Legal Services
-                            <span className="block text-primary-200">You Can Trust</span>
-                        </h1>
-                        <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto">
-                            Protecting your rights with integrity and professionalism.
-                        </p>
+                <div
+                    className="relative bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: "url('/images/bg.png')" }}
+                >
+                    {/* Optional dark overlay */}
+                    <div className="absolute inset-0 bg-black/30 z-10" />
+
+                    {/* Content */}
+                    <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white py-24">
                         <motion.div
-                            className="flex flex-col sm:flex-row gap-4 justify-center"
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.3 }}
+                            transition={{ duration: 0.8 }}
                         >
-                            <Link
-                                href="/contact"
-                                className="bg-white text-primary-600 hover:bg-primary-50 hover:scale-105 font-semibold py-3 px-8 rounded-lg transition-all duration-200 inline-flex items-center justify-center shadow-lg"
+                            <h1 className="text-4xl md:text-6xl font-serif font-bold mb-6">
+                                Professional Legal Services
+                                <span className="block text-primary-200">You Can Trust</span>
+                            </h1>
+                            <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto">
+                                Protecting your rights with integrity and professionalism.
+                            </p>
+                            <motion.div
+                                className="flex flex-col sm:flex-row gap-4 justify-center"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: 0.3 }}
                             >
-                                For Consultation
-                                <ArrowRightIcon className="ml-2 h-5 w-5" />
-                            </Link>
-                            <Link
-                                href="/services"
-                                className="border-2 border-white text-white hover:bg-white hover:text-primary-600 hover:scale-105 font-semibold py-3 px-8 rounded-lg transition-all duration-200 shadow-lg"
-                            >
-                                View Services
-                            </Link>
+                                <Link
+                                    href="/contact"
+                                    className="bg-white text-primary-600 hover:bg-primary-50 hover:scale-105 font-semibold py-3 px-8 rounded-lg transition-all duration-200 inline-flex items-center justify-center shadow-lg"
+                                >
+                                    For Consultation
+                                    <ArrowRightIcon className="ml-2 h-5 w-5" />
+                                </Link>
+                                <Link
+                                    href="/services"
+                                    className="border-2 border-white text-white hover:bg-white hover:text-primary-600 hover:scale-105 font-semibold py-3 px-8 rounded-lg transition-all duration-200 shadow-lg"
+                                >
+                                    View Services
+                                </Link>
+                            </motion.div>
                         </motion.div>
-                    </motion.div>
+                    </div>
                 </div>
+
 
                 {/* Scroll Indicator */}
                 <motion.div
