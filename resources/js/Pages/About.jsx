@@ -54,15 +54,14 @@ export default function About({ settings = {} }) {
             <section className="py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                        {/* Profile Image Placeholder */}
+                        {/* Profile Image */}
                         <div className="lg:col-span-1">
-                            <div className="bg-secondary-200 rounded-lg h-96 flex items-center justify-center">
-                                <div className="text-center">
-                                    <div className="w-24 h-24 bg-primary-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                                        <span className="text-white text-3xl font-bold">B</span>
-                                    </div>
-                                    <p className="text-secondary-600">Professional Photo</p>
-                                </div>
+                            <div className="rounded-lg h-96 overflow-hidden shadow-lg">
+                                <img
+                                    src="/images/picture.png"
+                                    alt="Atty. Andrew A. Belgica"
+                                    className="w-full h-full object-cover object-center"
+                                />
                             </div>
                         </div>
 

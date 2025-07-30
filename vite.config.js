@@ -12,7 +12,7 @@ export default defineConfig({
         react(),
     ],
     server: {
-        https: true, // for local dev only
+        https: false, // for local dev only
     },
     build: {
         outDir: "public/build",
