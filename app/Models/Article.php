@@ -97,6 +97,10 @@ class Article extends Model
 
     public function getRouteKeyName()
     {
+        // Use slug for public routes, but ID for admin routes
+        if (request()->is('admin/*')) {
+            return 'id';
+        }
         return 'slug';
     }
 

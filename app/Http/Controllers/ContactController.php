@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use App\Mail\ContactFormMail;
+use App\Mail\ContactAcknowledgmentMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class ContactController extends Controller
 {
@@ -24,7 +27,7 @@ class ContactController extends Controller
         }
 
         // Save to database
-        Contact::create([
+        $contact = Contact::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
@@ -33,8 +36,38 @@ class ContactController extends Controller
             'ip_address' => $request->ip(),
         ]);
 
-        // TODO: Send email notification to admin
-        // Mail::to('info@belgicalaw.com')->send(new ContactFormMail($request->all()));
+        // Prepare contact data for emails
+        $contactData = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'subject' => $request->subject,
+            'message' => $request->message,
+            'ip_address' => $request->ip(),
+        ];
+
+        try {
+            // Send email notification to admin
+            $adminEmail = config('mail.admin_email', 'info@belgicalaw.com');
+            Mail::to($adminEmail)->send(new ContactFormMail($contactData));
+
+            // Send acknowledgment email to client
+            Mail::to($request->email)->send(new ContactAcknowledgmentMail($contactData));
+
+            Log::info('Contact form emails sent successfully', [
+                'contact_id' => $contact->id,
+                'client_email' => $request->email,
+                'admin_email' => $adminEmail
+            ]);
+
+        } catch (\Exception $e) {
+            // Log the error but don't fail the form submission
+            Log::error('Failed to send contact form emails', [
+                'contact_id' => $contact->id,
+                'error' => $e->getMessage(),
+                'client_email' => $request->email
+            ]);
+        }
 
         return back()->with('success', 'Thank you for your message. We will get back to you soon!');
     }
