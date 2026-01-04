@@ -26,9 +26,39 @@ export default function Home() {
     ];
 
     const articles = [
-        { title: 'Understanding Civil Law', excerpt: 'A guide to civil law in the Philippines.', slug: 'understanding-civil-law', created_at: '2023-10-01', image: null },
-        { title: 'Corporate Compliance Basics', excerpt: 'What every business owner needs to know.', slug: 'corporate-compliance', created_at: '2023-10-15', image: null },
-        { title: 'Family Law Explained', excerpt: 'Navigating family legal issues.', slug: 'family-law-explained', created_at: '2023-11-01', image: null },
+        {
+            id: 1,
+            title: 'Understanding Civil Law',
+            excerpt: 'A guide to civil law in the Philippines.',
+            slug: 'understanding-civil-law',
+            category: 'civil-law',
+            formatted_published_at: 'Oct 01, 2023',
+            read_time: 5,
+            views: 120,
+            image: null
+        },
+        {
+            id: 2,
+            title: 'Corporate Compliance Basics',
+            excerpt: 'What every business owner needs to know.',
+            slug: 'corporate-compliance',
+            category: 'corporate-law',
+            formatted_published_at: 'Oct 15, 2023',
+            read_time: 7,
+            views: 85,
+            image: null
+        },
+        {
+            id: 3,
+            title: 'Family Law Explained',
+            excerpt: 'Navigating family legal issues.',
+            slug: 'family-law-explained',
+            category: 'family-law',
+            formatted_published_at: 'Nov 01, 2023',
+            read_time: 4,
+            views: 200,
+            image: null
+        },
     ];
 
     const testimonials = [
