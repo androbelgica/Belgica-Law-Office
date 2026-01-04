@@ -146,7 +146,7 @@ export default function Dashboard() {
                                         </div>
                                         <div className="text-right">
                                             <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium border ${inquiry.status === 'new' ? 'bg-blue-50 text-blue-700 border-blue-100' :
-                                                    inquiry.status === 'contacted' ? 'bg-green-50 text-green-700 border-green-100' : 'bg-gray-50 text-gray-600 border-gray-100'
+                                                inquiry.status === 'contacted' ? 'bg-green-50 text-green-700 border-green-100' : 'bg-gray-50 text-gray-600 border-gray-100'
                                                 }`}>
                                                 {inquiry.status.toUpperCase()}
                                             </span>
@@ -165,7 +165,7 @@ export default function Dashboard() {
                 <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 h-fit">
                     <h2 className="text-lg font-bold text-gray-900 mb-6">Quick Actions</h2>
                     <div className="space-y-3">
-                        <Link to="/admin/articles" className="w-full p-4 bg-gray-50 rounded-lg text-gray-700 font-medium hover:bg-primary-50 hover:text-primary-700 transition-colors flex items-center group border border-gray-100">
+                        <Link to="/admin/articles/create" className="w-full p-4 bg-gray-50 rounded-lg text-gray-700 font-medium hover:bg-primary-50 hover:text-primary-700 transition-colors flex items-center group border border-gray-100">
                             <DocumentTextIcon className="h-5 w-5 mr-3 text-gray-400 group-hover:text-primary-500 transition-colors" />
                             Write New Article
                         </Link>

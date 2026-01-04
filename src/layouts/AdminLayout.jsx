@@ -14,13 +14,13 @@ import {
 const SidebarItem = ({ to, icon: Icon, label, active }) => (
     <Link
         to={to}
-        className={`flex items-center px-6 py-3 text-sm font-medium transition-colors ${active
-            ? 'bg-primary-900 text-white border-r-4 border-primary-400'
+        className={`flex items-center px-4 py-3 mx-3 my-1 text-base font-medium rounded-lg transition-all duration-200 group ${active
+            ? 'bg-primary-600 text-white shadow-md'
             : 'text-gray-300 hover:bg-secondary-800 hover:text-white'
             }`}
     >
-        <Icon className="h-5 w-5 mr-3" />
-        {label}
+        <Icon className={`h-6 w-6 mr-3 flex-shrink-0 transition-colors ${active ? 'text-white' : 'text-gray-400 group-hover:text-white'}`} />
+        <span>{label}</span>
     </Link>
 );
 
@@ -115,12 +115,12 @@ export default function AdminLayout() {
                     />
                 </nav>
 
-                <div className="p-4 border-t border-secondary-800">
+                <div className="p-4 border-t border-secondary-800/50">
                     <button
                         onClick={handleSignOut}
-                        className="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-400 rounded-md hover:bg-secondary-800 hover:text-white transition-colors"
+                        className="flex items-center w-full px-4 py-3 mx-auto text-base font-medium text-gray-300 rounded-lg hover:bg-red-900/30 hover:text-red-400 transition-all duration-200 group"
                     >
-                        <ArrowLeftOnRectangleIcon className="h-5 w-5 mr-3" />
+                        <ArrowLeftOnRectangleIcon className="h-6 w-6 mr-3 group-hover:text-red-400 transition-colors" />
                         Sign Out
                     </button>
                 </div>

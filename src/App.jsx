@@ -14,7 +14,9 @@ import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
 import Inquiries from './pages/admin/Inquiries';
 import Articles from './pages/admin/Articles';
+import ArticleEditor from './pages/admin/ArticleEditor';
 import ServicesManager from './pages/admin/ServicesManager';
+import ServiceEditor from './pages/admin/ServiceEditor';
 import { Navigate } from 'react-router-dom';
 
 function App() {
@@ -34,9 +36,16 @@ function App() {
                 <Route path="/admin" element={<AdminLayout />}>
                     <Route index element={<Navigate to="dashboard" replace />} />
                     <Route path="dashboard" element={<Dashboard />} />
+
                     <Route path="inquiries" element={<Inquiries />} />
+
                     <Route path="articles" element={<Articles />} />
+                    <Route path="articles/create" element={<ArticleEditor />} />
+                    <Route path="articles/edit/:id" element={<ArticleEditor />} />
+
                     <Route path="services-manager" element={<ServicesManager />} />
+                    <Route path="services-manager/create" element={<ServiceEditor />} />
+                    <Route path="services-manager/edit/:id" element={<ServiceEditor />} />
                 </Route>
             </Routes>
         </BrowserRouter>
