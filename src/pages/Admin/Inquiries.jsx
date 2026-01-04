@@ -42,6 +42,17 @@ export default function Inquiries() {
         }
     };
 
+    const markAsContacted = async (id) => {
+        const { error } = await supabase
+            .from('inquiries')
+            .update({ status: 'contacted' })
+            .eq('id', id);
+
+        if (!error) {
+            setInquiries(inquiries.map(i => i.id === id ? { ...i, status: 'contacted' } : i));
+        }
+    };
+
     const deleteInquiry = async (id) => {
         if (!window.confirm('Are you sure you want to delete this inquiry?')) return;
 
@@ -112,8 +123,8 @@ export default function Inquiries() {
                                                         {inquiry.name}
                                                     </h3>
                                                     <span className={`px-2.5 py-0.5 text-xs font-bold rounded-full uppercase tracking-wide border ${inquiry.status === 'new' ? 'bg-blue-50 text-blue-700 border-blue-100' :
-                                                            inquiry.status === 'read' ? 'bg-gray-50 text-gray-700 border-gray-100' :
-                                                                'bg-green-50 text-green-700 border-green-100'
+                                                        inquiry.status === 'read' ? 'bg-gray-50 text-gray-700 border-gray-100' :
+                                                            'bg-green-50 text-green-700 border-green-100'
                                                         }`}>
                                                         {inquiry.status}
                                                     </span>
@@ -146,12 +157,21 @@ export default function Inquiries() {
                                         </div>
 
                                         <div className="flex md:flex-col gap-2 justify-start md:justify-center border-t md:border-t-0 md:border-l border-gray-100 pt-4 md:pt-0 md:pl-6 min-w-[140px]">
+                                            {inquiry.status !== 'contacted' && (
+                                                <button
+                                                    onClick={() => markAsContacted(inquiry.id)}
+                                                    className="flex items-center justify-center px-4 py-2 border border-gray-200 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 focus:outline-none transition-all w-full"
+                                                >
+                                                    <CheckCircleIcon className="h-4 w-4 mr-2" />
+                                                    Mark Contacted
+                                                </button>
+                                            )}
                                             {inquiry.status === 'new' && (
                                                 <button
                                                     onClick={() => markAsRead(inquiry.id)}
                                                     className="flex items-center justify-center px-4 py-2 border border-gray-200 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 hover:text-green-600 hover:border-green-200 focus:outline-none transition-all w-full"
                                                 >
-                                                    <CheckCircleIcon className="h-4 w-4 mr-2" />
+                                                    <InboxIcon className="h-4 w-4 mr-2" />
                                                     Mark Read
                                                 </button>
                                             )}

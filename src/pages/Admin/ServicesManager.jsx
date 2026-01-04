@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
+import { Link } from 'react-router-dom';
 import {
     PencilSquareIcon,
     BriefcaseIcon,
     CheckCircleIcon,
-    XCircleIcon
+    XCircleIcon,
+    PlusIcon
 } from '@heroicons/react/24/outline';
 
 export default function ServicesManager() {
@@ -41,9 +43,18 @@ export default function ServicesManager() {
 
     return (
         <div className="space-y-6">
-            <div>
-                <h1 className="text-3xl font-serif font-bold text-gray-900">Services Management</h1>
-                <p className="text-gray-500 mt-1">Manage, update, or toggle the visibility of your legal service offerings.</p>
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div>
+                    <h1 className="text-3xl font-serif font-bold text-gray-900">Services Management</h1>
+                    <p className="text-gray-500 mt-1">Manage, update, or toggle the visibility of your legal service offerings.</p>
+                </div>
+                <Link
+                    to="/admin/services-manager/create"
+                    className="flex items-center btn-primary shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+                >
+                    <PlusIcon className="h-5 w-5 mr-2" />
+                    Add Service
+                </Link>
             </div>
 
             {loading ? (
@@ -63,8 +74,8 @@ export default function ServicesManager() {
                                         <button
                                             onClick={() => toggleActive(service.id, service.is_active)}
                                             className={`flex items-center text-xs font-bold px-2.5 py-1 rounded-full transition-colors ${service.is_active
-                                                    ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                                                    : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                                                ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                                                : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
                                                 }`}
                                         >
                                             {service.is_active ? (
@@ -86,13 +97,13 @@ export default function ServicesManager() {
                                     </p>
                                 </div>
                                 <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex gap-3">
-                                    <button
-                                        onClick={() => alert('Edit functionality coming soon!')}
+                                    <Link
+                                        to={`/admin/services-manager/edit/${service.id}`}
                                         className="flex-1 flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors text-sm font-medium shadow-sm"
                                     >
                                         <PencilSquareIcon className="h-4 w-4 mr-2" />
                                         Edit Details
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         ))

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
+import { Link } from 'react-router-dom';
 import {
     PlusIcon,
     PencilSquareIcon,
@@ -50,13 +51,13 @@ export default function Articles() {
                     <h1 className="text-3xl font-serif font-bold text-gray-900">Articles</h1>
                     <p className="text-gray-500 mt-1">Manage your blog content and publications.</p>
                 </div>
-                <button
-                    onClick={() => alert("Create Article functionality coming soon via a separate page!")}
+                <Link
+                    to="/admin/articles/create"
                     className="flex items-center btn-primary shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
                 >
                     <PlusIcon className="h-5 w-5 mr-2" />
                     New Article
-                </button>
+                </Link>
             </div>
 
             <div className="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-200">
@@ -130,9 +131,12 @@ export default function Articles() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                    <button className="text-primary-600 hover:text-primary-900 p-1 hover:bg-primary-50 rounded">
+                                                    <Link
+                                                        to={`/admin/articles/edit/${article.id}`}
+                                                        className="text-primary-600 hover:text-primary-900 p-1 hover:bg-primary-50 rounded"
+                                                    >
                                                         <PencilSquareIcon className="h-5 w-5" />
-                                                    </button>
+                                                    </Link>
                                                     <button
                                                         onClick={() => deleteArticle(article.id)}
                                                         className="text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded"
