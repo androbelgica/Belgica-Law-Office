@@ -24,6 +24,7 @@ import { supabase } from '../lib/supabase';
 export default function Home() {
     const [services, setServices] = useState([]);
     const [articles, setArticles] = useState([]);
+    const [testimonials, setTestimonials] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -56,10 +57,20 @@ export default function Home() {
                         month: 'short',
                         day: 'numeric'
                     }),
-                    read_time: 5, // Default read time if not in DB, though schema doesn't have it yet? Ah schema doesn't have read_time in table, will fallback
+                    read_time: 5,
                 }));
 
                 setArticles(formattedArticles);
+
+                // Fetch Testimonials
+                const { data: testimonialsData, error: testimonialsError } = await supabase
+                    .from('testimonials')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('created_at', { ascending: false });
+
+                if (testimonialsError) throw testimonialsError;
+                setTestimonials(testimonialsData || []);
 
             } catch (error) {
                 console.error('Error fetching home data:', error);
@@ -71,9 +82,11 @@ export default function Home() {
         fetchData();
     }, []);
 
-    const testimonials = [
-        { name: 'John Doe', role: 'Business Owner', content: 'BelgicaLaw provided excellent service for our company incorporation.' },
-        { name: 'Jane Smith', role: 'Individual Client', content: 'Very professional, understanding, and effective legal counsel.' },
+    // Hardcoded fallback if DB is empty, or better, just rely on DB. 
+    // If DB is initially empty, we might want one default or just show nothing?
+    // Let's us mock ones only if DB returns 0.
+    const displayTestimonials = testimonials.length > 0 ? testimonials : [
+        { name: 'John Doe', role: 'Happy Client', content: 'Outstanding legal service provided by BelgicaLaw.', rating: 5, id: 'mock1' },
     ];
 
     const settings = {};
@@ -298,7 +311,7 @@ export default function Home() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                         viewport={{ once: true }}
                     >
-                        <TestimonialCarousel testimonials={testimonials} />
+                        <TestimonialCarousel testimonials={displayTestimonials} />
                     </motion.div>
                 </div>
             </section>

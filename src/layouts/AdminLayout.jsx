@@ -10,7 +10,8 @@ import {
     Bars3Icon,
     XMarkIcon,
     UserGroupIcon,
-    BuildingOfficeIcon
+    BuildingOfficeIcon,
+    ChatBubbleLeftRightIcon
 } from '@heroicons/react/24/outline';
 
 const SidebarItem = ({ to, icon: Icon, label, active }) => (
@@ -120,6 +121,12 @@ export default function AdminLayout() {
                         icon={UserGroupIcon}
                         label="Staff/Personnel"
                         active={location.pathname.startsWith('/admin/personnel')}
+                    />
+                    <SidebarItem
+                        to="/admin/testimonials"
+                        icon={ChatBubbleLeftRightIcon}
+                        label="Testimonials"
+                        active={location.pathname.startsWith('/admin/testimonials')}
                     />
                 </nav>
 
