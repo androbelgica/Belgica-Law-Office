@@ -177,30 +177,11 @@ function ServiceSlide({ service, index }) {
             whileHover={{ y: -10 }}
         >
             {/* Service Image */}
+
             <div className="relative h-48 overflow-hidden">
-                {(service.image_url || [
-                    'notarial-services',
-                    'legal-consultation',
-                    'litigation',
-                    'corporate-law',
-                    'real-estate',
-                    'family-law'
-                ].includes(service.slug)) ? (
+                {service.image_url ? (
                     <img
-                        src={[
-                            'notarial-services',
-                            'legal-consultation',
-                            'litigation',
-                            'corporate-law',
-                            'real-estate',
-                            'family-law'
-                        ].includes(service.slug) ? `/images/${service.slug.replace('-', '_')}_${service.slug === 'notarial-services' ? '1767510457772' :
-                            service.slug === 'legal-consultation' ? '1767510480514' :
-                                service.slug === 'litigation' ? '1767510503947' :
-                                    service.slug === 'corporate-law' ? '1767510529163' :
-                                        service.slug === 'real-estate' ? '1767510559509' :
-                                            '1767510586642'
-                        }.png` : `/storage/${service.image_url}`}
+                        src={service.image_url}
                         alt={service.title}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />

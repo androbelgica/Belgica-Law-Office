@@ -19,10 +19,34 @@ import {
 export default function Home() {
     // Mock Data
     const services = [
-        { title: 'Civil Litigation', description: 'Expert representation in civil disputes.', icon: 'ScaleIcon', slug: 'civil-litigation' },
-        { title: 'Corporate Law', description: 'Comprehensive legal solutions for businesses.', icon: 'BriefcaseIcon', slug: 'corporate-law' },
-        { title: 'Family Law', description: 'Compassionate support for family matters.', icon: 'HeartIcon', slug: 'family-law' },
-        { title: 'Real Estate', description: 'Guidance in property transactions.', icon: 'HomeIcon', slug: 'real-estate' },
+        {
+            title: 'Civil Litigation',
+            description: 'Expert representation in civil disputes.',
+            icon: 'ScaleIcon',
+            slug: 'civil-litigation',
+            image_url: '/images/litigation_1767510503947.png'
+        },
+        {
+            title: 'Corporate Law',
+            description: 'Comprehensive legal solutions for businesses.',
+            icon: 'BriefcaseIcon',
+            slug: 'corporate-law',
+            image_url: '/images/corporate_law_1767510529163.png'
+        },
+        {
+            title: 'Family Law',
+            description: 'Compassionate support for family matters.',
+            icon: 'HeartIcon',
+            slug: 'family-law',
+            image_url: '/images/family_law_1767510586642.png'
+        },
+        {
+            title: 'Real Estate',
+            description: 'Guidance in property transactions.',
+            icon: 'HomeIcon',
+            slug: 'real-estate',
+            image_url: '/images/real_estate_1767510559509.png'
+        },
     ];
 
     const articles = [

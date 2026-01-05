@@ -98,7 +98,7 @@ export default function BlogPost() {
                     {/* Featured Image Placeholder */}
                     <div className="w-full h-80 bg-gray-200 rounded-xl mb-8 flex items-center justify-center text-gray-400">
                         {article.featured_image ? (
-                            <img src={`/storage/${article.featured_image}`} className="w-full h-full object-cover rounded-xl" alt={article.title} />
+                            <img src={article.featured_image} className="w-full h-full object-cover rounded-xl" alt={article.title} />
                         ) : (
                             <span className="text-lg">Featured Image</span>
                         )}
