@@ -11,7 +11,7 @@ export default function Header() {
         { name: 'Home', to: '/' },
         { name: 'About', to: '/about' },
         { name: 'Services', to: '/services' },
-        { name: 'Blog', to: '/blog' },
+        { name: 'Articles', to: '/blog' },
         { name: 'Contact', to: '/contact' },
     ];
 
