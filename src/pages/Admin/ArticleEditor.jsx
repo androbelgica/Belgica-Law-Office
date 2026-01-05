@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { ArrowLeftIcon, PhotoIcon } from '@heroicons/react/24/outline';
+import ImageUpload from '../../components/ImageUpload';
 
 const slugify = (text) => {
     return text.toString().toLowerCase()
@@ -272,25 +273,27 @@ export default function ArticleEditor() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Featured Image URL</label>
-                            <div className="mt-1 flex rounded-md shadow-sm">
-                                <input
-                                    type="text"
-                                    name="featured_image"
-                                    value={formData.featured_image}
-                                    onChange={handleChange}
-                                    className="flex-1 block w-full rounded-none rounded-l-md border border-gray-300 px-3 py-2 sm:text-sm focus:ring-primary-500 focus:border-primary-500"
-                                    placeholder="https://"
-                                />
-                                <span className="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500">
-                                    <PhotoIcon className="h-5 w-5" />
-                                </span>
-                            </div>
-                            {formData.featured_image && (
-                                <div className="mt-2 relative h-32 w-full rounded-lg overflow-hidden bg-gray-100">
-                                    <img src={formData.featured_image} alt="Preview" className="h-full w-full object-cover" />
+                            <ImageUpload 
+                                label="Featured Image"
+                                defaultValue={formData.featured_image}
+                                onUpload={(url) => setFormData(prev => ({ ...prev, featured_image: url }))}
+                            />
+                            <div className="mt-4">
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Or Direct Image URL</label>
+                                <div className="flex rounded-md shadow-sm">
+                                    <input
+                                        type="text"
+                                        name="featured_image"
+                                        value={formData.featured_image}
+                                        onChange={handleChange}
+                                        className="flex-1 block w-full rounded-none rounded-l-md border border-gray-300 px-3 py-2 sm:text-sm focus:ring-primary-500 focus:border-primary-500"
+                                        placeholder="https://"
+                                    />
+                                    <span className="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500">
+                                        <PhotoIcon className="h-5 w-5" />
+                                    </span>
                                 </div>
-                            )}
+                            </div>
                         </div>
 
                         <div className="flex items-center space-x-2">

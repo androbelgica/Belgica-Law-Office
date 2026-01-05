@@ -1,5 +1,7 @@
 import { supabase } from '../lib/supabase';
 import React, { useState, useEffect } from 'react';
+import Layout from '../layouts/Layout';
+import ArticleCard from '../components/ArticleCard';
 
 export default function Blog() {
     const [articles, setArticles] = useState([]);

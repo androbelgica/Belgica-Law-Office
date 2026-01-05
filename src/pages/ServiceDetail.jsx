@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Layout from '../layouts/Layout';
+import { supabase } from '../lib/supabase';
 import {
     ScaleIcon,
     DocumentTextIcon,
@@ -16,130 +17,8 @@ import {
 
 export default function ServiceDetail() {
     const { slug } = useParams();
-
-    // Mock services database
-    const services = [
-        {
-            slug: 'notarial-services',
-            title: 'Notarial Services',
-            description: 'Comprehensive notarial services for all legal documents.',
-            icon: 'DocumentTextIcon',
-            image: '/images/notarial_services_1767510457772.png',
-            longDescription: `
-                Our Notarial Services ensure the authenticity and legality of your important documents. 
-                We provide efficient and reliable notarization for a wide range of documents including affidavits, contracts, deeds of sale, powers of attorney, and more.
-                
-                Proper notarization protects your rights and prevents fraud. Our office adheres to the strictest standards of the 2004 Rules on Notarial Practice.
-            `,
-            features: [
-                'Affidavits and Sworn Statements',
-                'Deeds of Sale and Donation',
-                'Special and General Powers of Attorney',
-                'Contracts and Agreements',
-                'Authentication of Documents'
-            ]
-        },
-        {
-            slug: 'legal-consultation',
-            title: 'Legal Consultation',
-            description: 'Expert advice for individuals and businesses.',
-            icon: 'UserGroupIcon',
-            image: '/images/legal_consultation_1767510480514.png',
-            longDescription: `
-                Unsure about your legal standing? Our Legal Consultation services provide you with the clarity and direction you need.
-                We offer in-depth analysis of your situation, explaining the applicable laws and maximizing your options.
-
-                Whether it's a personal matter, a business dispute, or a potential lawsuit, getting the right advice early can save you time, money, and stress.
-            `,
-            features: [
-                'Case Evaluation and Analysis',
-                'Legal Opinions and Memos',
-                'Rights and Remedies Assessment',
-                'Pre-litigation Advice',
-                'Contract Review'
-            ]
-        },
-        {
-            slug: 'litigation',
-            title: 'Litigation',
-            description: 'Representation in civil and criminal cases.',
-            icon: 'ScaleIcon',
-            image: '/images/litigation_1767510503947.png',
-            longDescription: `
-                When disputes escalate to the courtroom, you need a fierce and dedicated advocate. 
-                Our Litigation practice covers representation in Civil, Criminal, and Administrative cases before various courts and tribunals in the Philippines.
-
-                We handle every stage of the process, from filing pleadings to trial and appeals, fighting tirelessly to protect your interests.
-            `,
-            features: [
-                'Civil and Criminal Cases',
-                'Family Court Cases',
-                'Appeals to Higher Courts',
-                'Administrative Proceedings',
-                'Dispute Resolution'
-            ]
-        },
-        {
-            slug: 'corporate-law',
-            title: 'Corporate Law',
-            description: 'Business registration, detailed compliance, and contracts.',
-            icon: 'BuildingOfficeIcon',
-            image: '/images/corporate_law_1767510529163.png',
-            longDescription: `
-                Navigate the complex business landscape with confidence. Our Corporate Law services support businesses of all sizes, from startups to established corporations.
-                
-                We assist with SEC registration, compliance requirements, corporate housekeeping, and drafting of commercial contracts to ensure your business operates within the bounds of the law.
-            `,
-            features: [
-                'Business Registration (SEC/DTI)',
-                'Corporate Housekeeping & Compliance',
-                'Contract Drafting and Review',
-                'Mergers and Acquisitions',
-                'Labor Relations Advice'
-            ]
-        },
-        {
-            slug: 'real-estate',
-            title: 'Real Estate',
-            description: 'Property transactions and land disputes.',
-            icon: 'HomeIcon',
-            image: '/images/real_estate_1767510559509.png',
-            longDescription: `
-                Secure your property investments with our expert Real Estate legal services. 
-                We handle land titling, transfer of ownership, lease agreements, and resolution of property disputes.
-
-                Whether you are buying your first home or managing a portfolio of properties, we ensure that your transactions are smooth and legally sound.
-            `,
-            features: [
-                'Land Title Transfer and Registration',
-                'Deed of Sale and Absolute Sale',
-                'Lease and Rental Agreements',
-                'Property Dispute Resolution',
-                'Due Diligence on Property Titles'
-            ]
-        },
-        {
-            slug: 'family-law',
-            title: 'Family Law',
-            description: 'Marriage, annulment, and support cases.',
-            icon: 'HeartIcon',
-            image: '/images/family_law_1767510586642.png',
-            longDescription: `
-                Family legal matters require sensitivity and strength. We provide compassionate guidance and robust representation in cases involving family relations.
-
-                Our expertise covers nullity of marriage, legal separation, child custody, support, and adoption. We aim to achieve resolutions that respect the dignity of all parties involved, especially children.
-            `,
-            features: [
-                'Declaration of Nullity of Marriage',
-                'Child Custody and Support',
-                'Adoption Proceedings',
-                'Violence Against Women and Children (VAWC)',
-                'Estate Planning and Wills'
-            ]
-        }
-    ];
-
-    const service = services.find(s => s.slug === slug);
+    const [service, setService] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     // Icon mapping
     const iconMap = {
@@ -152,6 +31,42 @@ export default function ServiceDetail() {
         'BriefcaseIcon': BriefcaseIcon,
         'BuildingOfficeIcon': BuildingOfficeIcon,
     };
+
+    useEffect(() => {
+        const fetchService = async () => {
+            try {
+                setLoading(true);
+                const { data, error } = await supabase
+                    .from('services')
+                    .select('*')
+                    .eq('slug', slug)
+                    .eq('is_active', true)
+                    .single();
+
+                if (error) throw error;
+                setService(data);
+            } catch (error) {
+                console.error('Error fetching service:', error);
+                setService(null);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (slug) {
+            fetchService();
+        }
+    }, [slug]);
+
+    if (loading) {
+        return (
+            <Layout>
+                <div className="min-h-screen flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+                </div>
+            </Layout>
+        );
+    }
 
     if (!service) {
         return (
@@ -176,7 +91,7 @@ export default function ServiceDetail() {
             <div className="relative h-96">
                 <div className="absolute inset-0">
                     <img
-                        src={service.image}
+                        src={service.image_url || '/images/bg.png'}
                         alt={service.title}
                         className="w-full h-full object-cover"
                     />
@@ -195,7 +110,7 @@ export default function ServiceDetail() {
                             {service.title}
                         </h1>
                     </div>
-                    <p className="text-xl text-gray-200 max-w-2xl ml-16">
+                    <p className="text-xl text-gray-200 max-w-2xl md:ml-20">
                         {service.description}
                     </p>
                 </div>
@@ -211,20 +126,24 @@ export default function ServiceDetail() {
                                 Overview
                             </h2>
                             <div className="prose prose-lg text-secondary-600 mb-8 whitespace-pre-line">
-                                {service.longDescription}
+                                {service.long_description}
                             </div>
 
-                            <h3 className="text-2xl font-bold text-secondary-900 mb-6">
-                                What We Offer
-                            </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {service.features.map((feature, index) => (
-                                    <div key={index} className="flex items-start p-4 bg-secondary-50 rounded-lg">
-                                        <CheckCircleIcon className="h-6 w-6 text-primary-600 mr-3 flex-shrink-0" />
-                                        <span className="font-medium text-secondary-900">{feature}</span>
+                            {service.features && Array.isArray(service.features) && service.features.length > 0 && (
+                                <>
+                                    <h3 className="text-2xl font-bold text-secondary-900 mb-6">
+                                        What We Offer
+                                    </h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {service.features.map((feature, index) => (
+                                            <div key={index} className="flex items-start p-4 bg-secondary-50 rounded-lg">
+                                                <CheckCircleIcon className="h-6 w-6 text-primary-600 mr-3 flex-shrink-0" />
+                                                <span className="font-medium text-secondary-900">{feature}</span>
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
+                                </>
+                            )}
                         </div>
 
                         {/* Sidebar */}
@@ -238,7 +157,7 @@ export default function ServiceDetail() {
                                 </p>
                                 <Link
                                     to="/contact"
-                                    className="block w-full text-center btn-primary mb-4"
+                                    className="block w-full text-center btn-primary mb-4 py-3"
                                 >
                                     Book an Appointment
                                 </Link>
@@ -256,3 +175,4 @@ export default function ServiceDetail() {
         </Layout>
     );
 }
+
