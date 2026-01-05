@@ -72,21 +72,32 @@ export default function Contact() {
         }
     };
 
+    const FacebookIcon = (props) => (
+        <svg {...props} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
+        </svg>
+    );
+
     const contactInfo = [
         {
             icon: MapPinIcon,
             title: 'Office Location',
-            details: [settings.office_address || 'Metro Manila, Philippines']
+            details: [settings.office_address || '17-A Sta Lucia St. cor SAV-1 Ave. Brgy. San Antonio, Paranaque City, Metro Manila, Philippines']
         },
         {
             icon: PhoneIcon,
-            title: 'Phone Number',
-            details: [settings.contact_phone || '+63 XXX XXX XXXX', 'Available during office hours']
+            title: 'Contact Number',
+            details: [settings.contact_phone || '+63 918 576 3952 / 7757-1141', 'Available during office hours']
         },
         {
             icon: EnvelopeIcon,
             title: 'Email Address',
-            details: [settings.contact_email || 'info@belgicalaw.com', 'We respond within 24 hours']
+            details: [settings.contact_email || 'belgicalaw22@gmail.com', 'We respond within 24 hours']
+        },
+        {
+            icon: FacebookIcon,
+            title: 'Facebook Page',
+            details: ['Visit us on Facebook', 'For news and updates']
         },
         {
             icon: ClockIcon,
@@ -243,25 +254,44 @@ export default function Contact() {
                             </h2>
 
                             <div className="space-y-6">
-                                {contactInfo.map((info, index) => (
-                                    <div key={index} className="flex items-start">
-                                        <div className="flex-shrink-0">
-                                            <div className="inline-flex items-center justify-center w-12 h-12 bg-primary-100 rounded-lg">
-                                                <info.icon className="h-6 w-6 text-primary-600" />
+                                {contactInfo.map((info, index) => {
+                                    const isFacebook = info.title === 'Facebook Page';
+                                    const Content = (
+                                        <div className="flex items-start">
+                                            <div className="flex-shrink-0">
+                                                <div className="inline-flex items-center justify-center w-12 h-12 bg-primary-100 rounded-lg">
+                                                    <info.icon className="h-6 w-6 text-primary-600" />
+                                                </div>
+                                            </div>
+                                            <div className="ml-4">
+                                                <h3 className="text-lg font-semibold text-secondary-900 mb-1">
+                                                    {info.title}
+                                                </h3>
+                                                {info.details.map((detail, detailIndex) => (
+                                                    <p key={detailIndex} className="text-secondary-600">
+                                                        {detail}
+                                                    </p>
+                                                ))}
                                             </div>
                                         </div>
-                                        <div className="ml-4">
-                                            <h3 className="text-lg font-semibold text-secondary-900 mb-1">
-                                                {info.title}
-                                            </h3>
-                                            {info.details.map((detail, detailIndex) => (
-                                                <p key={detailIndex} className="text-secondary-600">
-                                                    {detail}
-                                                </p>
-                                            ))}
+                                    );
+
+                                    return isFacebook ? (
+                                        <a
+                                            key={index}
+                                            href="https://www.facebook.com/share/17nPeKiFyB/"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="block hover:bg-gray-50 -m-2 p-2 rounded-lg transition-colors"
+                                        >
+                                            {Content}
+                                        </a>
+                                    ) : (
+                                        <div key={index}>
+                                            {Content}
                                         </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
 
                             {/* Additional Info */}
@@ -277,7 +307,7 @@ export default function Contact() {
                                 <div className="flex flex-col sm:flex-row gap-3">
                                     <a
                                         href={`tel:${settings.contact_phone || '+63XXXXXXXXXX'}`}
-                                        className="btn-primary text-center"
+                                        className="btn-primary text-center flex items-center justify-center"
                                     >
                                         Call Emergency Line
                                     </a>
@@ -285,9 +315,20 @@ export default function Contact() {
                                         href="https://wa.me/63XXXXXXXXXX"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="btn-secondary text-center"
+                                        className="btn-secondary text-center flex items-center justify-center"
                                     >
                                         WhatsApp Us
+                                    </a>
+                                    <a
+                                        href="https://www.facebook.com/share/17nPeKiFyB/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="btn-secondary text-center flex items-center justify-center"
+                                    >
+                                        <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
+                                        </svg>
+                                        Facebook
                                     </a>
                                 </div>
                             </div>
@@ -311,10 +352,10 @@ export default function Contact() {
 
                     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
                         <Map
-                            latitude={parseFloat(settings.office_latitude) || 14.5995}
-                            longitude={parseFloat(settings.office_longitude) || 120.9842}
+                            latitude={parseFloat(settings.office_latitude) || 14.470267221442585}
+                            longitude={parseFloat(settings.office_longitude) || 121.02198225300141}
                             zoom={parseInt(settings.map_zoom_level) || 15}
-                            address={settings.office_address || 'Metro Manila, Philippines'}
+                            address={settings.office_address || '17-A Sta Lucia St. cor SAV-1 Ave. Brgy. San Antonio, Paranaque City, Metro Manila, Philippines'}
                             className="h-96 lg:h-[500px]"
                         />
                     </div>
@@ -331,19 +372,15 @@ export default function Contact() {
                             <ul className="space-y-2 text-secondary-600">
                                 <li className="flex items-start">
                                     <span className="text-primary-600 mr-2">•</span>
-                                    Accessible via MRT/LRT stations
+                                    Accessible via Dr. A. Santos Ave. (Sucat Road)
                                 </li>
                                 <li className="flex items-start">
                                     <span className="text-primary-600 mr-2">•</span>
-                                    Multiple bus routes available
+                                    Tricycle transport available from Valley 1 stoplight
                                 </li>
                                 <li className="flex items-start">
                                     <span className="text-primary-600 mr-2">•</span>
-                                    Parking available for clients
-                                </li>
-                                <li className="flex items-start">
-                                    <span className="text-primary-600 mr-2">•</span>
-                                    Wheelchair accessible building
+                                    Landmark: Our office is directly beside of Parañaque City Hall and behind Jollibee (Valley 1) / Sta. Lucia
                                 </li>
                             </ul>
                         </div>

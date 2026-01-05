@@ -48,21 +48,34 @@ export default function Footer() {
                             <div className="flex items-start">
                                 <MapPinIcon className="h-5 w-5 text-primary-400 mt-0.5 mr-3 flex-shrink-0" />
                                 <span className="text-secondary-300 text-sm">
-                                    Metro Manila, Philippines
+                                    17-A Sta Lucia St. cor SAV-1 Ave. Brgy. San Antonio, Paranaque City, Metro Manila
                                 </span>
                             </div>
                             <div className="flex items-center">
                                 <PhoneIcon className="h-5 w-5 text-primary-400 mr-3 flex-shrink-0" />
                                 <span className="text-secondary-300 text-sm">
-                                    +63 XXX XXX XXXX
+                                    +63 918 576 3952 / 7757-1141
                                 </span>
                             </div>
                             <div className="flex items-center">
                                 <EnvelopeIcon className="h-5 w-5 text-primary-400 mr-3 flex-shrink-0" />
                                 <span className="text-secondary-300 text-sm">
-                                    info@belgicalaw.com
+                                    belgicalaw22@gmail.com
                                 </span>
                             </div>
+                            <a
+                                href="https://www.facebook.com/share/17nPeKiFyB/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center group"
+                            >
+                                <svg className="h-5 w-5 text-primary-400 mr-3 flex-shrink-0 group-hover:text-primary-300 transition-colors" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
+                                </svg>
+                                <span className="text-secondary-300 text-sm group-hover:text-white transition-colors">
+                                    Visit us on Facebook
+                                </span>
+                            </a>
                         </div>
                     </div>
 
