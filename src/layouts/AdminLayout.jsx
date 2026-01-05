@@ -8,7 +8,9 @@ import {
     UserIcon,
     ArrowLeftOnRectangleIcon,
     Bars3Icon,
-    XMarkIcon
+    XMarkIcon,
+    UserGroupIcon,
+    BuildingOfficeIcon
 } from '@heroicons/react/24/outline';
 
 const SidebarItem = ({ to, icon: Icon, label, active }) => (
@@ -109,9 +111,15 @@ export default function AdminLayout() {
                     />
                     <SidebarItem
                         to="/admin/services-manager"
-                        icon={UserIcon}
+                        icon={BuildingOfficeIcon}
                         label="Services"
-                        active={location.pathname === '/admin/services-manager'}
+                        active={location.pathname.startsWith('/admin/services-manager')}
+                    />
+                    <SidebarItem
+                        to="/admin/personnel"
+                        icon={UserGroupIcon}
+                        label="Staff/Personnel"
+                        active={location.pathname.startsWith('/admin/personnel')}
                     />
                 </nav>
 

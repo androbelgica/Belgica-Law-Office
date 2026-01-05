@@ -17,6 +17,8 @@ import Articles from './pages/Admin/Articles';
 import ArticleEditor from './pages/Admin/ArticleEditor';
 import ServicesManager from './pages/Admin/ServicesManager';
 import ServiceEditor from './pages/Admin/ServiceEditor';
+import PersonnelManager from './pages/Admin/PersonnelManager';
+import PersonnelEditor from './pages/Admin/PersonnelEditor';
 import { Navigate } from 'react-router-dom';
 
 function App() {
@@ -46,6 +48,10 @@ function App() {
                     <Route path="services-manager" element={<ServicesManager />} />
                     <Route path="services-manager/create" element={<ServiceEditor />} />
                     <Route path="services-manager/edit/:id" element={<ServiceEditor />} />
+
+                    <Route path="personnel" element={<PersonnelManager />} />
+                    <Route path="personnel/create" element={<PersonnelEditor />} />
+                    <Route path="personnel/edit/:id" element={<PersonnelEditor />} />
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -1,17 +1,40 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../layouts/Layout';
+import { supabase } from '../lib/supabase';
 import {
     AcademicCapIcon,
     ScaleIcon,
     TrophyIcon,
     UsersIcon,
-    CheckCircleIcon
+    CheckCircleIcon,
+    UserGroupIcon
 } from '@heroicons/react/24/outline';
 
 export default function About() {
-    // Default settings if not provided
-    const settings = {};
+    const [personnel, setPersonnel] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchPersonnel = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('personnel')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('sort_order', { ascending: true });
+
+                if (error) throw error;
+                setPersonnel(data || []);
+            } catch (err) {
+                console.error('Error fetching personnel:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPersonnel();
+    }, []);
 
     const qualifications = [
         'Licensed Attorney in the Philippines',
@@ -76,7 +99,7 @@ export default function About() {
 
                             <div className="prose prose-lg text-secondary-700 mb-8">
                                 <p className="mb-4">
-                                    {settings.about_content || 'Welcome to BelgicaLaw, where legal expertise meets personalized service. With years of experience in the Philippine legal system, we are committed to providing comprehensive legal solutions tailored to meet the unique needs of our clients.'}
+                                    Welcome to BelgicaLaw, where legal expertise meets personalized service. With years of experience in the Philippine legal system, we are committed to providing comprehensive legal solutions tailored to meet the unique needs of our clients.
                                 </p>
 
                                 <p className="mb-4">
@@ -112,6 +135,51 @@ export default function About() {
                     </div>
                 </div>
             </section>
+
+            {/* Personnel/Staff Section */}
+            {personnel.length > 0 && (
+                <section className="py-16 bg-white border-t border-gray-100">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center mb-12">
+                            <h2 className="text-3xl font-serif font-bold text-secondary-900 mb-4">
+                                Our Legal Team
+                            </h2>
+                            <p className="text-lg text-secondary-600 max-w-2xl mx-auto">
+                                Meet the dedicated professionals who work tirelessly to provide you with the best legal representation.
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {personnel.map((member) => (
+                                <div key={member.id} className="bg-secondary-50 rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-300 group border border-transparent hover:border-primary-100">
+                                    <div className="w-48 h-48 mx-auto rounded-full overflow-hidden mb-6 border-4 border-white shadow-lg transition-transform duration-500 group-hover:scale-105">
+                                        {member.image_url ? (
+                                            <img 
+                                                src={member.image_url} 
+                                                alt={member.name} 
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full bg-primary-50 flex items-center justify-center">
+                                                <UserGroupIcon className="h-20 w-20 text-primary-200" />
+                                            </div>
+                                        )}
+                                    </div>
+                                    <h3 className="text-2xl font-bold text-secondary-900 mb-1 group-hover:text-primary-600 transition-colors">
+                                        {member.name}
+                                    </h3>
+                                    <p className="text-primary-600 font-semibold mb-4 tracking-wide uppercase text-xs">
+                                        {member.role}
+                                    </p>
+                                    <p className="text-secondary-600 text-sm leading-relaxed line-clamp-4">
+                                        {member.bio}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* Qualifications & Experience */}
             <section className="py-16 bg-secondary-50">
@@ -204,3 +272,4 @@ export default function About() {
         </Layout>
     );
 }
+
