@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../layouts/Layout';
 import ServiceCard from '../components/ServiceCard';
@@ -13,16 +13,11 @@ import {
     BuildingOfficeIcon
 } from '@heroicons/react/24/outline';
 
+import { supabase } from '../lib/supabase';
+
 export default function Services() {
-    // Mock services data until we connect to Supabase
-    const services = [
-        { title: 'Civil Litigation', description: 'Representation in civil disputes including breach of contract, property disputes, and torts.', icon: 'ScaleIcon', slug: 'civil-litigation' },
-        { title: 'Corporate Law', description: 'Legal assistance for business formation, compliance, contracts, and corporate governance.', icon: 'BriefcaseIcon', slug: 'corporate-law' },
-        { title: 'Family Law', description: 'Compassionate handling of annulment, child custody, support, and other family matters.', icon: 'HeartIcon', slug: 'family-law' },
-        { title: 'Real Estate', description: 'Assistance with property transactions, titling, transfers, and land disputes.', icon: 'HomeIcon', slug: 'real-estate' },
-        { title: 'Labor Law', description: 'Advising on employer-employee relationships, termination disputes, and labor standards.', icon: 'UserGroupIcon', slug: 'labor-law' },
-        { title: 'Notarial Services', description: 'Authentication of documents, affidavits, deeds of sale, and other legal instruments.', icon: 'DocumentTextIcon', slug: 'notarial-services' },
-    ];
+    const [services, setServices] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     // Icon mapping
     const iconMap = {
@@ -35,6 +30,26 @@ export default function Services() {
         'BriefcaseIcon': BriefcaseIcon,
         'BuildingOfficeIcon': BuildingOfficeIcon,
     };
+
+    useEffect(() => {
+        const fetchServices = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('services')
+                    .select('*')
+                    .order('created_at', { ascending: true });
+
+                if (error) throw error;
+                setServices(data || []);
+            } catch (error) {
+                console.error('Error fetching services:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchServices();
+    }, []);
 
     // Map services to include proper icon components
     const servicesWithIcons = services.map(service => ({

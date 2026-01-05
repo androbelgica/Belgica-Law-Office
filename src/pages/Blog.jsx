@@ -1,92 +1,38 @@
-import React, { useState } from 'react';
-import Layout from '../layouts/Layout';
-import ArticleCard from '../components/ArticleCard';
-import { motion } from 'framer-motion';
+import { supabase } from '../lib/supabase';
+import React, { useState, useEffect } from 'react';
 
 export default function Blog() {
-    const articles = [
-        {
-            id: 1,
-            title: 'Understanding Philippine Labor Laws',
-            category: 'labor-law',
-            slug: 'understanding-philippine-labor-laws',
-            excerpt: 'A comprehensive guide to employee rights and employer responsibilities in the Philippines.',
-            formatted_published_at: 'Oct 15, 2023',
-            read_time: 5,
-            views: 120,
-            featured_image: null,
-            is_featured: true,
-            tags: ['Labor', 'Employment', 'Rights']
-        },
-        {
-            id: 2,
-            title: 'Buying Property in the Philippines',
-            category: 'real-estate',
-            slug: 'buying-property-philippines',
-            excerpt: 'Essential legal steps and requirements for purchasing real estate in the country.',
-            formatted_published_at: 'Nov 2, 2023',
-            read_time: 7,
-            views: 85,
-            featured_image: null,
-            is_featured: false,
-            tags: ['Real Estate', 'Property', 'Investment']
-        },
-        {
-            id: 3,
-            title: 'Family Code Highlights',
-            category: 'family-law',
-            slug: 'family-code-highlights',
-            excerpt: 'Key provisions of the Family Code that every Filipino family should know.',
-            formatted_published_at: 'Dec 10, 2023',
-            read_time: 4,
-            views: 200,
-            featured_image: null,
-            is_featured: false,
-            tags: ['Family', 'Marriage', 'Law']
-        },
-        // Add more articles to make it look "complete"
-        {
-            id: 4,
-            title: 'Starting a Business: Legal Requirements',
-            category: 'corporate-law',
-            slug: 'starting-business-legal-requirements',
-            excerpt: 'Everything you need to know about registering your business with the SEC and DTI.',
-            formatted_published_at: 'Jan 5, 2024',
-            read_time: 6,
-            views: 45,
-            featured_image: null,
-            is_featured: false,
-            tags: ['Business', 'Startup', 'SEC']
-        },
-        {
-            id: 5,
-            title: 'Estate Planning 101',
-            category: 'family-law',
-            slug: 'estate-planning-101',
-            excerpt: 'Why having a Last Will and Testament is crucial for protecting your family\'s future.',
-            formatted_published_at: 'Jan 20, 2024',
-            read_time: 5,
-            views: 67,
-            featured_image: null,
-            is_featured: false,
-            tags: ['Wills', 'Estate', 'Inheritance']
-        },
-        {
-            id: 6,
-            title: 'Notary Public Services: What You Need',
-            category: 'legal-tips',
-            slug: 'notary-public-services-what-you-need',
-            excerpt: 'Common documents that require notarization and what to bring to your appointment.',
-            formatted_published_at: 'Feb 1, 2024',
-            read_time: 3,
-            views: 156,
-            featured_image: null,
-            is_featured: false,
-            tags: ['Notary', 'Documents', 'Legal']
-        }
-    ];
-
+    const [articles, setArticles] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('All');
+
+    useEffect(() => {
+        const fetchArticles = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('articles')
+                    .select('*')
+                    .order('published_at', { ascending: false });
+
+                if (error) throw error;
+
+                // transform data
+                const formatted = (data || []).map(a => ({
+                    ...a,
+                    formatted_published_at: new Date(a.published_at).toLocaleDateString(),
+                    read_time: 5, // fallback
+                }));
+                setArticles(formatted);
+            } catch (err) {
+                console.error('Error fetching articles:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchArticles();
+    }, []);
+
     const categories = ['All', ...new Set(articles.map(article => article.category))];
 
     const filteredArticles = filter === 'All'
@@ -120,8 +66,8 @@ export default function Blog() {
                             key={category}
                             onClick={() => setFilter(category)}
                             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${filter === category
-                                    ? 'bg-primary-600 text-white'
-                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                ? 'bg-primary-600 text-white'
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                 }`}
                         >
                             {category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}

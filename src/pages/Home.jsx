@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
@@ -13,77 +13,63 @@ import {
     DocumentTextIcon,
     UserGroupIcon,
     ShieldCheckIcon,
-    ArrowRightIcon
+    ArrowRightIcon,
+    HomeIcon,
+    HeartIcon,
+    BriefcaseIcon,
+    BuildingOfficeIcon
 } from '@heroicons/react/24/outline';
+import { supabase } from '../lib/supabase';
 
 export default function Home() {
-    // Mock Data
-    const services = [
-        {
-            title: 'Civil Litigation',
-            description: 'Expert representation in civil disputes.',
-            icon: 'ScaleIcon',
-            slug: 'civil-litigation',
-            image_url: '/images/litigation_1767510503947.png'
-        },
-        {
-            title: 'Corporate Law',
-            description: 'Comprehensive legal solutions for businesses.',
-            icon: 'BriefcaseIcon',
-            slug: 'corporate-law',
-            image_url: '/images/corporate_law_1767510529163.png'
-        },
-        {
-            title: 'Family Law',
-            description: 'Compassionate support for family matters.',
-            icon: 'HeartIcon',
-            slug: 'family-law',
-            image_url: '/images/family_law_1767510586642.png'
-        },
-        {
-            title: 'Real Estate',
-            description: 'Guidance in property transactions.',
-            icon: 'HomeIcon',
-            slug: 'real-estate',
-            image_url: '/images/real_estate_1767510559509.png'
-        },
-    ];
+    const [services, setServices] = useState([]);
+    const [articles, setArticles] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const articles = [
-        {
-            id: 1,
-            title: 'Understanding Civil Law',
-            excerpt: 'A guide to civil law in the Philippines.',
-            slug: 'understanding-civil-law',
-            category: 'civil-law',
-            formatted_published_at: 'Oct 01, 2023',
-            read_time: 5,
-            views: 120,
-            image: null
-        },
-        {
-            id: 2,
-            title: 'Corporate Compliance Basics',
-            excerpt: 'What every business owner needs to know.',
-            slug: 'corporate-compliance',
-            category: 'corporate-law',
-            formatted_published_at: 'Oct 15, 2023',
-            read_time: 7,
-            views: 85,
-            image: null
-        },
-        {
-            id: 3,
-            title: 'Family Law Explained',
-            excerpt: 'Navigating family legal issues.',
-            slug: 'family-law-explained',
-            category: 'family-law',
-            formatted_published_at: 'Nov 01, 2023',
-            read_time: 4,
-            views: 200,
-            image: null
-        },
-    ];
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Fetch Services
+                const { data: servicesData, error: servicesError } = await supabase
+                    .from('services')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('created_at', { ascending: true });
+
+                if (servicesError) throw servicesError;
+                setServices(servicesData || []);
+
+                // Fetch Articles (Limit 3)
+                const { data: articlesData, error: articlesError } = await supabase
+                    .from('articles')
+                    .select('*')
+                    .order('published_at', { ascending: false })
+                    .limit(3);
+
+                if (articlesError) throw articlesError;
+
+                // Format article dates
+                const formattedArticles = (articlesData || []).map(article => ({
+                    ...article,
+                    formatted_published_at: new Date(article.published_at).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    }),
+                    read_time: 5, // Default read time if not in DB, though schema doesn't have it yet? Ah schema doesn't have read_time in table, will fallback
+                }));
+
+                setArticles(formattedArticles);
+
+            } catch (error) {
+                console.error('Error fetching home data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const testimonials = [
         { name: 'John Doe', role: 'Business Owner', content: 'BelgicaLaw provided excellent service for our company incorporation.' },
@@ -98,6 +84,10 @@ export default function Home() {
         'DocumentTextIcon': DocumentTextIcon,
         'UserGroupIcon': UserGroupIcon,
         'ShieldCheckIcon': ShieldCheckIcon,
+        'HomeIcon': HomeIcon,
+        'HeartIcon': HeartIcon,
+        'BriefcaseIcon': BriefcaseIcon,
+        'BuildingOfficeIcon': BuildingOfficeIcon,
     };
 
     // Map services to include proper icon components

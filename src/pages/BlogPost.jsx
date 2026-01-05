@@ -1,65 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Layout from '../layouts/Layout';
 import { CalendarIcon, ClockIcon, UserIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
+import { supabase } from '../lib/supabase';
 
 export default function BlogPost() {
     const { slug } = useParams();
+    const [article, setArticle] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    // Mock articles database (same as in Blog.jsx + content)
-    const articles = [
-        {
-            id: 1,
-            title: 'Understanding Philippine Labor Laws',
-            category: 'labor-law',
-            slug: 'understanding-philippine-labor-laws',
-            formatted_published_at: 'Oct 15, 2023',
-            read_time: 5,
-            author: 'Atty. Belgica',
-            content: `
-                <p class="mb-4">
-                    Labor laws in the Philippines are designed to afford protection to labor, promote full employment, ensure equal work opportunities regardless of sex, race or creed, and regulate the relations between workers and employers.
-                </p>
-                <h3 class="text-xl font-bold mb-2">Key Rights of Employees</h3>
-                <ul class="list-disc pl-5 mb-4">
-                    <li>Security of Tenure</li>
-                    <li>Minimum Wage</li>
-                    <li>Holiday Pay, 13th Month Pay, and Overtime Pay</li>
-                    <li>Rest Days and Leaves (Service Incentive Leave, Maternity/Paternity Leave)</li>
-                    <li>Social Security Benefits (SSS, PhilHealth, Pag-IBIG)</li>
-                </ul>
-                <p class="mb-4">
-                    Employers must also maintain a safe working environment and observe due process when imposing disciplinary actions or termination.
-                </p>
-                <div class="bg-gray-50 p-4 border-l-4 border-primary-600 my-6">
-                    <strong>Note:</strong> This article provides a general overview. Specific cases may vary.
-                </div>
-            `,
-            featured_image: null
-        },
-        // ... (We would ideally fetch this data based on slug)
-        {
-            id: 2,
-            title: 'Buying Property in the Philippines',
-            slug: 'buying-property-philippines',
-            category: 'real-estate',
-            formatted_published_at: 'Nov 2, 2023',
-            read_time: 7,
-            author: 'Atty. Belgica',
-            content: `
-                <p class="mb-4">Buying real estate is one of the most significant investments you can make. Here is a simplified guide to the legal process in the Philippines.</p>
-                <h3 class="text-xl font-bold mb-2">1. Due Diligence</h3>
-                <p class="mb-4">Before signing anything, verify the Transfer Certificate of Title (TCT) with the Register of Deeds. Ensure the seller is the real owner and there are no encumbrances.</p>
-                <h3 class="text-xl font-bold mb-2">2. Deed of Absolute Sale</h3>
-                <p class="mb-4">Once the price is agreed upon and payment is made, a Deed of Absolute Sale is drafted and notarized.</p>
-                <h3 class="text-xl font-bold mb-2">3. Taxes and Transfer</h3>
-                <p class="mb-4">You must pay the Capital Gains Tax, Documentary Stamp Tax, Transfer Tax, and Registration Fees before the new title can be issued in your name.</p>
-            `,
-            featured_image: null
-        }
-    ];
+    useEffect(() => {
+        const fetchArticle = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('articles')
+                    .select('*')
+                    .eq('slug', slug)
+                    .single();
 
-    const article = articles.find(a => a.slug === slug) || articles[0]; // Fallback to first if not found for demo
+                if (error) throw error;
+
+                setArticle({
+                    ...data,
+                    formatted_published_at: new Date(data.published_at).toLocaleDateString(),
+                    read_time: 5, // fallback
+                    author: 'Atty. Belgica' // fallback/hardcoded unless we join profiles
+                });
+            } catch (err) {
+                console.error('Error fetching article:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchArticle();
+    }, [slug]);
+
+    if (loading) return <Layout><div className="py-20 text-center">Loading article...</div></Layout>;
+    if (!article) return <Layout><div className="py-20 text-center">Article not found.</div></Layout>;
 
     return (
         <Layout title={`${article.title} - BelgicaLaw Blog`}>
