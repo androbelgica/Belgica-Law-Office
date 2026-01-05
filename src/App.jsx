@@ -10,13 +10,13 @@ import Contact from './pages/Contact';
 
 // Admin Imports
 import AdminLayout from './layouts/AdminLayout';
-import Login from './pages/admin/Login';
-import Dashboard from './pages/admin/Dashboard';
-import Inquiries from './pages/admin/Inquiries';
-import Articles from './pages/admin/Articles';
-import ArticleEditor from './pages/admin/ArticleEditor';
-import ServicesManager from './pages/admin/ServicesManager';
-import ServiceEditor from './pages/admin/ServiceEditor';
+import Login from './pages/Admin/Login';
+import Dashboard from './pages/Admin/Dashboard';
+import Inquiries from './pages/Admin/Inquiries';
+import Articles from './pages/Admin/Articles';
+import ArticleEditor from './pages/Admin/ArticleEditor';
+import ServicesManager from './pages/Admin/ServicesManager';
+import ServiceEditor from './pages/Admin/ServiceEditor';
 import { Navigate } from 'react-router-dom';
 
 function App() {
