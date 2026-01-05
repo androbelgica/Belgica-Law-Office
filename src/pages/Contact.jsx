@@ -36,11 +36,27 @@ export default function Contact() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setProcessing(true);
+        setErrors({});
 
-        // Mock submission
-        setTimeout(() => {
-            setProcessing(false);
-            alert("Message sent! (Simulation)");
+        try {
+            const { supabase } = await import('../lib/supabase');
+
+            const { error } = await supabase
+                .from('inquiries')
+                .insert([
+                    {
+                        name: data.name,
+                        email: data.email,
+                        phone: data.phone,
+                        service_interest: data.subject || 'General Inquiry',
+                        message: data.message,
+                        status: 'new'
+                    }
+                ]);
+
+            if (error) throw error;
+
+            alert("Message sent successfully! We will get back to you shortly.");
             setData({
                 name: '',
                 email: '',
@@ -48,7 +64,12 @@ export default function Contact() {
                 subject: '',
                 message: ''
             });
-        }, 1000);
+        } catch (err) {
+            console.error('Error sending message:', err);
+            alert("Failed to send message. Please try again later.");
+        } finally {
+            setProcessing(false);
+        }
     };
 
     const contactInfo = [

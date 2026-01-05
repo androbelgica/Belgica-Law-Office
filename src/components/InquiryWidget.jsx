@@ -15,17 +15,47 @@ export default function InquiryWidget() {
     const [processing, setProcessing] = useState(false);
     const [errors, setErrors] = useState({});
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setProcessing(true);
+        setErrors({});
 
-        // Mock submission
-        setTimeout(() => {
+        // Simple validation
+        const newErrors = {};
+        if (!data.message) newErrors.message = 'Message is required';
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
             setProcessing(false);
+            return;
+        }
+
+        try {
+            // Import supabase dynamically or from props if possible, but here we assume it's available in imports
+            const { supabase } = await import('../lib/supabase');
+
+            const { error } = await supabase
+                .from('inquiries')
+                .insert([
+                    {
+                        name: data.name || 'Anonymous',
+                        email: data.email || 'No email provided',
+                        message: data.message,
+                        service_interest: 'General Inquiry', // Default for widget
+                        status: 'new'
+                    }
+                ]);
+
+            if (error) throw error;
+
             setIsOpen(false);
             setData({ name: '', email: '', message: '' });
-            alert('Message sent (Mock)');
-        }, 1000);
+            alert('Your message has been sent successfully!');
+        } catch (err) {
+            console.error('Error submitting inquiry:', err);
+            alert('Failed to send message. Please try again.');
+        } finally {
+            setProcessing(false);
+        }
     };
 
     const handleChange = (key, value) => {
